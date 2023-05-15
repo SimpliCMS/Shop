@@ -23,6 +23,7 @@ class ModuleServiceProvider extends BaseModuleServiceProvider {
      * @return void
      */
     public function boot() {
+        parent::boot();
         $this->app->register(RouteServiceProvider::class);
         $this->app->concord->registerModule(\Vanilo\Foundation\Providers\ModuleServiceProvider::class,
                 $config = [
