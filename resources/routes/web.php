@@ -68,9 +68,9 @@ Route::prefix('shop')->group(function () {
     Route::group(['prefix' => 'payment/stripe', 'as' => 'payment.stripe.'], function () {
         Route::post('webhook', 'StripeReturnController@webhook');
     });
+});
 
-    Route::group(['prefix' => 'profile'], function () {
-        Route::get('edit', 'ShopProfileController@settings')->name('profile.settings.shop');
-        Route::post('edit', 'ShopProfileController@update')->name('profile.settings.shop.update');
-    });
+Route::group(['prefix' => 'profile/shop'], function () {
+    Route::get('edit', 'ShopProfileController@settings')->name('profile.settings.shop');
+    Route::post('edit', 'ShopProfileController@update')->name('profile.settings.shop.update');
 });
