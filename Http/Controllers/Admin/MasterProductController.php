@@ -1,0 +1,106 @@
+<?php
+
+namespace Modules\Shop\Http\Controllers\Admin;
+
+use Illuminate\Support\Facades\DB;
+use Konekt\AppShell\Http\Controllers\BaseController;
+use Modules\Shop\Contracts\Requests\CreateMasterProduct;
+use Modules\Shop\Contracts\Requests\UpdateMasterProduct;
+use Vanilo\Category\Models\TaxonomyProxy;
+use Vanilo\MasterProduct\Contracts\MasterProduct;
+use Vanilo\MasterProduct\Contracts\MasterProductVariant;
+use Vanilo\MasterProduct\Models\MasterProductProxy;
+use Vanilo\Product\Models\ProductStateProxy;
+use Vanilo\Properties\Models\PropertyProxy;
+
+class MasterProductController extends BaseController
+{
+    public function create()
+    {
+        return view('shop-admin::master-product.create', [
+            'product' => app(MasterProduct::class),
+            'states' => ProductStateProxy::choices()
+        ]);
+    }
+
+    public function show(MasterProduct $product)
+    {
+        return view('shop-admin::master-product.show', [
+            'product' => $product,
+            'taxonomies' => TaxonomyProxy::all(),
+            'properties' => PropertyProxy::all()
+        ]);
+    }
+
+    public function store(CreateMasterProduct $request)
+    {
+        try {
+            $product = MasterProductProxy::create($request->except('images'));
+            flash()->success(__(':name has been created', ['name' => $product->name]));
+
+            try {
+                if (!empty($request->files->filter('images'))) {
+                    $product->addMultipleMediaFromRequest(['images'])->each(function ($fileAdder) {
+                        $fileAdder->toMediaCollection();
+                    });
+                }
+            } catch (\Exception $e) { // Here we already have the product created
+                flash()->error(__('Error: :msg', ['msg' => $e->getMessage()]));
+
+                return redirect()->route('shop.admin.master_product.edit', ['product' => $product]);
+            }
+        } catch (\Exception $e) {
+            flash()->error(__('Error: :msg', ['msg' => $e->getMessage()]));
+
+            return redirect()->back()->withInput();
+        }
+
+        return redirect(route('shop.admin.product.index'));
+    }
+
+    public function edit(MasterProduct $product)
+    {
+        return view('shop-admin::master-product.edit', [
+            'product' => $product,
+            'states' => ProductStateProxy::choices()
+        ]);
+    }
+
+    public function update(MasterProduct $product, UpdateMasterProduct $request)
+    {
+        try {
+            $product->update($request->all());
+
+            flash()->success(__(':name has been updated', ['name' => $product->name]));
+        } catch (\Exception $e) {
+            flash()->error(__('Error: :msg', ['msg' => $e->getMessage()]));
+
+            return redirect()->back()->withInput();
+        }
+
+        return redirect(route('shop.admin.master_product.show', $product));
+    }
+
+    public function destroy(MasterProduct $product)
+    {
+        try {
+            $name = $product->name;
+            DB::transaction(function () use ($product) {
+                $product->variants->each(function (MasterProductVariant $variant) {
+                    $variant->propertyValues()->detach();
+                    $variant->delete();
+                });
+                $product->propertyValues()->detach();
+                $product->taxons()->detach();
+                $product->delete();
+            });
+            flash()->warning(__(':name has been deleted', ['name' => $name]));
+        } catch (\Exception $e) {
+            flash()->error(__('Error: :msg', ['msg' => $e->getMessage()]));
+
+            return redirect()->back();
+        }
+
+        return redirect(route('shop.admin.product.index'));
+    }
+}

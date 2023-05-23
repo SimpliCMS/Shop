@@ -6,6 +6,36 @@ use Konekt\Concord\BaseModuleServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Vanilo\Cart\Facades\Cart;
 use TorMorten\Eventy\Facades\Events as Eventy;
+use Modules\Shop\Http\Requests\CreateCarrier;
+use Modules\Shop\Http\Requests\CreateChannel;
+use Modules\Shop\Http\Requests\CreateMasterProduct;
+use Modules\Shop\Http\Requests\CreateMasterProductVariant;
+use Modules\Shop\Http\Requests\CreatePaymentMethod;
+use Modules\Shop\Http\Requests\CreateProduct;
+use Modules\Shop\Http\Requests\CreateProperty;
+use Modules\Shop\Http\Requests\CreatePropertyValue;
+use Modules\Shop\Http\Requests\CreatePropertyValueForm;
+use Modules\Shop\Http\Requests\CreateShippingMethod;
+use Modules\Shop\Http\Requests\CreateTaxon;
+use Modules\Shop\Http\Requests\CreateTaxonForm;
+use Modules\Shop\Http\Requests\CreateTaxonomy;
+use Modules\Shop\Http\Requests\CreateZone;
+use Modules\Shop\Http\Requests\CreateZoneMember;
+use Modules\Shop\Http\Requests\SyncModelPropertyValues;
+use Modules\Shop\Http\Requests\SyncModelTaxons;
+use Modules\Shop\Http\Requests\UpdateCarrier;
+use Modules\Shop\Http\Requests\UpdateChannel;
+use Modules\Shop\Http\Requests\UpdateMasterProduct;
+use Modules\Shop\Http\Requests\UpdateMasterProductVariant;
+use Modules\Shop\Http\Requests\UpdateOrder;
+use Modules\Shop\Http\Requests\UpdatePaymentMethod;
+use Modules\Shop\Http\Requests\UpdateProduct;
+use Modules\Shop\Http\Requests\UpdateProperty;
+use Modules\Shop\Http\Requests\UpdatePropertyValue;
+use Modules\Shop\Http\Requests\UpdateShippingMethod;
+use Modules\Shop\Http\Requests\UpdateTaxon;
+use Modules\Shop\Http\Requests\UpdateTaxonomy;
+use Modules\Shop\Http\Requests\UpdateZone;
 use Schema;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider {
@@ -16,6 +46,38 @@ class ModuleServiceProvider extends BaseModuleServiceProvider {
      * @var string
      */
     protected $modelNamespace = 'Modules\Shop\Models';
+    protected $requests = [
+        CreateProduct::class,
+        UpdateProduct::class,
+        CreateMasterProduct::class,
+        UpdateMasterProduct::class,
+        CreateMasterProductVariant::class,
+        UpdateMasterProductVariant::class,
+        UpdateOrder::class,
+        CreateTaxonomy::class,
+        UpdateTaxonomy::class,
+        CreateTaxon::class,
+        UpdateTaxon::class,
+        CreateTaxonForm::class,
+        SyncModelTaxons::class,
+        CreateProperty::class,
+        UpdateProperty::class,
+        CreatePropertyValueForm::class,
+        CreatePropertyValue::class,
+        UpdatePropertyValue::class,
+        SyncModelPropertyValues::class,
+        CreateChannel::class,
+        UpdateChannel::class,
+        CreatePaymentMethod::class,
+        UpdatePaymentMethod::class,
+        CreateShippingMethod::class,
+        UpdateShippingMethod::class,
+        CreateCarrier::class,
+        UpdateCarrier::class,
+        CreateZone::class,
+        UpdateZone::class,
+        CreateZoneMember::class,
+    ];
 
     /**
      * Bootstrap the module services.
@@ -111,16 +173,6 @@ class ModuleServiceProvider extends BaseModuleServiceProvider {
             ],
                 ]
         );
-        $this->app->concord->registerModule(\Vanilo\Admin\Providers\ModuleServiceProvider::class,
-                $config = [
-            'routes' => [
-                'prefix' => 'admin/shop',
-                'as' => 'vanilo.admin.',
-                'middleware' => ['web', 'auth', 'acl'],
-                'files' => ['admin']
-            ],
-                ]
-        );
         $this->app->concord->registerModule(\Vanilo\Adyen\Providers\ModuleServiceProvider::class);
         $this->app->concord->registerModule(\Vanilo\Braintree\Providers\ModuleServiceProvider::class);
         $this->app->concord->registerModule(\Vanilo\Euplatesc\Providers\ModuleServiceProvider::class);
@@ -129,4 +181,5 @@ class ModuleServiceProvider extends BaseModuleServiceProvider {
         $this->app->concord->registerModule(\Vanilo\Simplepay\Providers\ModuleServiceProvider::class);
         $this->app->concord->registerModule(\Vanilo\Stripe\Providers\ModuleServiceProvider::class);
     }
+
 }

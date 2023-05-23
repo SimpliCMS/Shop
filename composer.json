@@ -8,7 +8,6 @@
         }
     ],
     "require": {
-        "vanilo/admin": "^3.6",
         "vanilo/adyen": "^1.0",
         "vanilo/braintree": "^1.0",
         "vanilo/euplatesc": "^3.0",
