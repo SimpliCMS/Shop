@@ -42,7 +42,7 @@
                                 <tr>
                                     <td width="55"><img src="{{ $item->product->getThumbnailUrl() ?: url('/themes/default/assets/img/product.jpg') }}" class="product-image"/></td>
                                     <td>
-                                        <a href="{{ route('product.show', $item->product->masterProduct ? $item->product->masterProduct->slug : $item->product->slug) }}">
+                                        <a href="@if($item->product_type == 'Modules\Bookable\Models\Bookable'){{ route('bookable.show', $item->product->slug) }}@else{{ route('product.show', $item->product->masterProduct ? $item->product->masterProduct->slug : $item->product->slug) }}@endif">
                                             {{ $item->product->getName() }}
                                         </a></td>
                                     <td>{{ format_price($item->price) }}</td>
