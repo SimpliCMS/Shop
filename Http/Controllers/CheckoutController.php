@@ -50,7 +50,7 @@ class CheckoutController extends Controller {
         $this->checkout->update($request->all());
         $this->checkout->setCustomAttribute('notes', $request->get('notes'));
         $this->checkout->setCart($this->cart);
-
+        $this->checkout->setCustomAttribute('product_type', 'Modules\Bookable\Models\Bookable');
         /** @var Order $order */
         $order = $orderFactory->createFromCheckout($this->checkout);
         $order->notes = $request->get('notes');

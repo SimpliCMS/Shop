@@ -40,7 +40,7 @@
         @endcan
 
         @can('view orders')
-                <a href="{{ route('vanilo.admin.order.show', $order) }}?print=1"
+                <a href="{{ route('shop.admin.order.show', $order) }}?print=1"
                    class="btn btn-outline-secondary ml-2">{{ __('Print') }}</a>
         @endcan
 

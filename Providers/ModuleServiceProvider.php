@@ -36,6 +36,7 @@ use Modules\Shop\Http\Requests\UpdateShippingMethod;
 use Modules\Shop\Http\Requests\UpdateTaxon;
 use Modules\Shop\Http\Requests\UpdateTaxonomy;
 use Modules\Shop\Http\Requests\UpdateZone;
+use Modules\Bookable\Models\Bookable;
 use Schema;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider {

@@ -23,7 +23,7 @@
                         <input type="checkbox" name="order_item[{{$item->id}}]" />
                     </td>
                     <td>{{ $loop->iteration }}</td>
-                    <td>@if($item->product)<a href="{{ route('shop.admin.product.show', $item->product) }}">@endif
+                    <td>@if($item->product)<a href="@if($item->product_type == 'Modules\Bookable\Models\Bookable'){{ route('bookable.admin.show', $item->id) }}@else{{ route('shop.admin.product.show', $item->product) }}@endif">@endif
                         {{ $item->name }}
                         @if($item->product)</a>@endif
                     </td>
