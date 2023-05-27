@@ -4,7 +4,7 @@ namespace Modules\Shop\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ShopSettingsProvider extends ServiceProvider
+class ShopSettingsServiceProvider extends ServiceProvider
 {
     
     /**
