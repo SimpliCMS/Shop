@@ -22,7 +22,7 @@
     @else
     <div class="row">
         <div class="col-md-8">
-            <div class="card bg-white">
+            <div class="card">
                 <div class="card-header">{{ __('Cart Items') }}</div>
 
                 <div class="card-body">
@@ -94,7 +94,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card bg-white">
+            <div class="card">
                 <div class="card-header">{{ __('Summary') }}</div>
                 <div class="card-body">
                     @include('shop::cart._summary')

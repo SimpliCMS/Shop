@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card shadow bg-white">
+            <div class="card shadow">
                 <h3 class="text-center mt-4 mb-4">{{ __('Summary') }}</h3>
                 <div class="card-body">
                     @include('shop::cart._summary')
